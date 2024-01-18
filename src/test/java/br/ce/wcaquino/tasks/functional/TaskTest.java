@@ -1,6 +1,10 @@
 package br.ce.wcaquino.tasks.functional;
 
-import java.time.Clock;
+
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,14 +12,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 
 public class TaskTest {
-	
-	
-    public WebDriver openApp() {
+
+    public WebDriver openApp() throws MalformedURLException {
         // Set up ChromeOptions with the desired preferences
         ChromeOptions chromeOptions = new ChromeOptions();
         Map<String, Object> prefs = new HashMap<>();
@@ -31,22 +37,28 @@ public class TaskTest {
         chromeOptions.addArguments("disable-infobars");
         chromeOptions.addArguments("--headless");
 
+        // Define desired capabilities
+        DesiredCapabilities cap = new DesiredCapabilities();
+        cap.setBrowserName("chrome");
+        cap.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
 
-        // Set up WebDriver with ChromeOptions
-        WebDriver driver = new ChromeDriver(chromeOptions);
-        
+        // Hub URL
+        String huburl = "http://mo76was1.fyre.ibm.com:4444/";
+
+        // Create driver with hub address and capability
+        WebDriver driver = new RemoteWebDriver(new URL(huburl), cap);
+
         // Navigate to the specified URL
         driver.navigate().to("http://mo76was1.fyre.ibm.com:8080/tasks");
-        
+
         // Set implicit wait using WebDriverWait (you can adjust the timeout as needed)
-        //WebDriverWait wait = new WebDriverWait(driver, 10);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        
+
         return driver;
     }
 
 	@Test
-	public void saveTaskSuccesful() {
+	public void saveTaskSuccesful() throws MalformedURLException {
 		WebDriver driver = openApp();
 		try {
 		
@@ -75,7 +87,7 @@ public class TaskTest {
 	
 	
 	@Test
-	public void blankTaskField() {
+	public void blankTaskField() throws MalformedURLException {
 		WebDriver driver = openApp();
 		try {
 		
@@ -100,7 +112,7 @@ public class TaskTest {
 
 
 	@Test
-	public void blankDateField() {
+	public void blankDateField() throws MalformedURLException {
 		WebDriver driver = openApp();
 		try {
 		
@@ -125,7 +137,7 @@ public class TaskTest {
 	
 	
 	@Test
-	public void dateFieldIncorrect() {
+	public void dateFieldIncorrect() throws MalformedURLException {
 		WebDriver driver = openApp();
 		try {
 		
