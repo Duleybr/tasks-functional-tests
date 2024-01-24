@@ -8,8 +8,9 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 //import org.openqa.selenium.chrome.ChromeDriver;
@@ -77,6 +78,7 @@ public class TaskTest {
 		//Validar a mensagem de sucesso
 		String message = driver.findElement(By.id("message")).getText();
 		Assert.assertEquals("Success!", message);
+		
 		
 	} finally {
 			//fechar o browser
